@@ -15,7 +15,6 @@ urlpatterns = [
     path('api/v1/', include('api.urls')),
 =======
     path('api/v1/', include(router.urls)),
->>>>>>> 5a7231757dce914175a5eda838c9b7213741a056
 ]
 
 
