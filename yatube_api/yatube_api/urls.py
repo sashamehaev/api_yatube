@@ -7,13 +7,10 @@ from rest_framework.routers import SimpleRouter
 router = SimpleRouter()
 router.register('api-token-auth', CatViewSet)
 router.register('posts', CatViewSet)
-router.register('groups', CatViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-<<<<<<< HEAD
     path('api/v1/', include('api.urls')),
-=======
     path('api/v1/', include(router.urls)),
 ]
 
