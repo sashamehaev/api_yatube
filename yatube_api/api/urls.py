@@ -3,7 +3,7 @@ from rest_framework import routers
 from django.contrib import admin
 from django.urls import include, path
 
-from api.views import PostList
+from api.views import PostList, PostDetail, GroupList, GroupDetail
 
 
 # router = routers.DefaultRouter()
@@ -17,6 +17,9 @@ from api.views import PostList
 
 urlpatterns = [
     path('posts/', PostList.as_view()),
+    path('posts/<int:pk>/', PostDetail.as_view()),
+    path('groups/', GroupList.as_view()),
+    path('groups/<int:pk>/', GroupDetail.as_view()),
     # path('cats/<int:pk>/', CatDetail.as_view()),
     # path('', include(router.urls)),
     path('api-token-auth/', include('djoser.urls')),
