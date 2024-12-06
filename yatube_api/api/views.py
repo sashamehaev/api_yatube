@@ -4,28 +4,14 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework import status
 
-from posts.models import Post, Group
-from .serializer import PostSerializer, GroupSerializer
-logging.basicConfig(
-    level=logging.DEBUG,
-    filename='program.log',
-    format='%(asctime)s, %(levelname)s, %(message)s, %(name)s'
-)
+from posts.models import Post, Group, Comment
+from .serializer import PostSerializer, GroupSerializer, CommentSerializer
 
 
-"""class GroupViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer"""
-
-
-class PostList(generics.ListCreateAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-
-
-class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -35,6 +21,11 @@ class GroupList(generics.ListAPIView):
     serializer_class = GroupSerializer
 
 
-class GroupDetail(generics.RetrieveAPIView):
+class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer

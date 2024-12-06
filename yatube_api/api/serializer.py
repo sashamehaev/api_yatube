@@ -17,8 +17,8 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ('title', 'slug', 'description')
 
 
-"""class CommentSerializer(serializers.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('author', 'post', 'text')"""
+        fields = ('author', 'post', 'text')

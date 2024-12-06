@@ -1,27 +1,16 @@
 from rest_framework import routers
-
+from rest_framework.routers import DefaultRouter
 from django.contrib import admin
 from django.urls import include, path
+from . import views
+from api.views import PostViewSet, CommentViewSet, GroupViewSet
 
-from api.views import PostList, PostDetail, GroupList, GroupDetail
-
-
-# router = routers.DefaultRouter()
-# router.register('posts/', PostAPI.as_view())
-# router.register('groups', GroupViewSet)
-# router.register(r'posts/(?P<post_id>\d)/comments')
-# router.register(r'posts/(?P<post_id>\d)/comments/(?P<comment_id>\d)')
-# router.register('posts/<int:post_id>/comments', UserViewSet)
-# router.register('posts/<int:post_id>/comments/<int:comment_id>', UserViewSet)
-# router.register('groups', AchievementViewSet)
-
+router = DefaultRouter()
+router.register(r'posts', PostViewSet)
+router.register(r'groups', GroupViewSet)
+router.register(r'posts/\d+/comments', CommentViewSet)
 urlpatterns = [
-    path('posts/', PostList.as_view()),
-    path('posts/<int:pk>/', PostDetail.as_view()),
-    path('groups/', GroupList.as_view()),
-    path('groups/<int:pk>/', GroupDetail.as_view()),
-    # path('cats/<int:pk>/', CatDetail.as_view()),
-    # path('', include(router.urls)),
+    path('', include(router.urls)),
     path('api-token-auth/', include('djoser.urls')),
     path('api-token-auth/', include('djoser.urls.jwt')),
 ]
