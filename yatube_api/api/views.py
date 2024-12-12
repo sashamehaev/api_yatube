@@ -1,11 +1,4 @@
-import logging
-from rest_framework import generics
-from rest_framework.views import APIView
 from rest_framework import viewsets
-from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework import status
 
 from posts.models import Post, Group, Comment
 from .serializer import PostSerializer, GroupSerializer, CommentSerializer
@@ -15,17 +8,24 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-
-class GroupList(generics.ListAPIView):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
-class GroupViewSet(viewsets.ReadOnlyModelViewSet):
+class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    # queryset во вьюсете не указываем
+    # Нам тут нужны не все комментарии, а только связанные с котом с id=cat_id
+    # Поэтому нужно переопределить метод get_queryset и применить фильтр
+
+    def get_queryset(self):
+        # Получаем id котика из эндпоинта
+        cat_id = self.kwargs.get("cat_id")
+        # И отбираем только нужные комментарии
+        new_queryset = Comment.objects.filter(cat=cat_id)
+        return new_queryset

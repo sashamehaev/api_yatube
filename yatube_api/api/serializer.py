@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from posts.models import Post, Group, Comment
-
+from rest_framework import serializers
 
 class PostSerializer(serializers.ModelSerializer):
 
@@ -21,4 +21,4 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('author', 'post', 'text')
+        fields = ('id', 'author', 'post', 'text', 'created')
