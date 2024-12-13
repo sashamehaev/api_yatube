@@ -1,6 +1,8 @@
 from rest_framework import viewsets
 from django.core.exceptions import PermissionDenied
 from posts.models import Post, Group, Comment
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
 from .serializer import PostSerializer, GroupSerializer, CommentSerializer
 
 
@@ -22,20 +24,25 @@ class PostViewSet(viewsets.ModelViewSet):
         super(PostViewSet, self).perform_destroy(instance)
 
 
-class GroupViewSet(viewsets.ModelViewSet):
+class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    # queryset во вьюсете не указываем
-    # Нам тут нужны не все комментарии, а только связанные с котом с id=cat_id
-    # Поэтому нужно переопределить метод get_queryset и применить фильтр
 
-    def get_queryset(self):
-        # Получаем id котика из эндпоинта
-        cat_id = self.kwargs.get("cat_id")
-        # И отбираем только нужные комментарии
-        new_queryset = Comment.objects.filter(cat=cat_id)
-        return new_queryset
+    """def get_queryset(self):
+        return self.get_post().comments.all()"""
+
+    def get_post(self):
+        post_id = self.kwargs
+        print(post_id)
+        return print('get_object_or_404(Post, pk=post_id)')
+
+    def perform_create(self, serializer):
+        self.get_post()
+        post_id = self.kwargs.get('post_id')
+        post = get_object_or_404(Post, pk=post_id)
+        serializer.save(author=self.request.user, post=post)
