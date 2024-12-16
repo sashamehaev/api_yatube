@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 
-from .serializer import CommentSerializer, GroupSerializer, PostSerializer
+from .serializers import CommentSerializer, GroupSerializer, PostSerializer
 from posts.models import Group, Post
 
 
